@@ -1,0 +1,138 @@
+.green-label {
+    font-size: medium;
+    color: green;
+  }
+  .red-label{
+    font-size: medium;
+    color: red;
+  } 
+  .normal{ 
+    font-size: medium;
+    color: black;
+    text-decoration: underline;
+    font: message-box;
+    margin-left: 15px;
+  } 
+  .normal2{ 
+    font-size: medium;
+    color: black;
+    font: message-box;
+    margin-left: 20px;
+  } 
+  .normal1{
+    font-size: medium; 
+    color: black;
+    text-decoration: underline;
+    font: message-box;
+    margin-left: 20px;
+  }
+  .title{
+    font-size: medium; 
+    color: black;
+    font: message-box;
+    margin-left: 15px;
+  }
+  .Error-AML{
+    font-size: medium;
+    color: red;
+    font: 500;
+    margin-left: 50px;
+  }
+  .Empty{ 
+    font-size: medium;
+    color: red;
+    font: 500;
+    margin-left: 10px; 
+    align-items: center;
+  border-width: 2px;
+    padding: 6px;  
+    margin: 6px 0;
+  }
+  .custom-label .slds-form-element__label {
+    font-size: 22px;
+  }
+  .Emptys{
+    font-size: medium;
+    color: green;
+    font: 500;
+    margin-left: 10px;
+    align-items: center;
+    border-width: 2px;
+    padding: 6px;  
+    margin: 6px 0;
+    
+  } 
+  .message-container {
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  }
+  
+  .button-container {
+    margin-left: auto;
+  }
+  .field-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .field-label {
+    width: 150px;
+    margin-right: 10px;
+    font-weight: bold;
+  } 
+  .blue-checkbox {
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid red; /* default border color */
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .blue-checkbox:checked {
+    border-color: green; /* border color when checked */
+  }
+  
+  .blue-checkbox:checked::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 3px;
+    width: 4px;
+    height: 8px;
+    border: solid green;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  
+  .blue-checkbox:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  
+  
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  p {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+ 

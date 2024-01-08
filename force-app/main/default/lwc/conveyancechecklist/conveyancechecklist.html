@@ -1,0 +1,206 @@
+<template>
+    <lightning-card variant="Narrow" title="Check Contract Checklist" icon-name="standard:recipe">
+    <div class="slds-p-horizontal_small" style="text-align:center">
+    <lightning-button variant="brand" label="Create Contract"
+    title="Open popup" onclick={showModalBox} class="slds-m-left_x-small">
+    </lightning-button>
+    </div>
+    </lightning-card>
+    
+    <!-- modal start -->      
+    <template if:true={isShowModal}>
+      
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+    <div class="slds-modal__container">
+    <!-- modal header start -->
+    <header class="slds-modal__header">
+    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+    <lightning-icon icon-name="utility:close"
+    alternative-text="close"
+    variant="inverse"
+    size="small" ></lightning-icon>
+    <span class="slds-assistive-text">Close</span>
+    </button>
+    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Contract Checklist</h2>
+    </header>
+
+    <!-- Inquiry Fields -->
+   
+        <template if:false={hideNextButtonAll}>  
+             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+        <div class="message-container" >
+            <div class="Empty" if:true={AMLstatus}>
+                {AmlNotPending}
+            </div>
+            <div class="Empty" if:false={AMLstatus}>
+            <div class="Empty" if:true={isFieldsEmpty}>
+                {EmptyMessage}
+            </div>
+            <div class="Empty" if:true={isAmlEmpty}>
+                    {Aml}
+            </div>
+            <div class="Emptys" if:true={isButtonVisible}>
+                {completed}
+              </div>
+              <div class="Empty" if:true={isInquiry}>
+                {InquiryCon}
+            </div>
+            <!--This is for the pending AML -->
+               </div>
+        </div>
+
+            
+                
+            
+    <lightning-card title="Inquiry Record Details" icon-name="custom:custom75">
+        <p class="title">
+        Inquiry Record -  
+         <a href={InquiryId}  class="normal1">
+            {Inquiryname}
+    </a></p>
+
+    <div style="margin-top: 10px;">
+        <template for:each={fields} for:item="field" >
+    <div key={field.apiName} class={field.colorclass} > 
+        <input type="checkbox" style="margin-left: 15px" class="blue-checkbox" data-field-api-name={field.apiName} onchange={handleChange} checked={field.isEmpty} disabled/>
+        <label style="margin-left: 15px;">{field.label}</label>
+    </div>
+    </template> 
+    </div>
+
+    </lightning-card>
+
+
+    <!-- AML Fields -->
+    <template if:true={IncType}>
+    <lightning-card title="AMLS Record Details" icon-name="standard:account">
+        
+      <template if:true={amlfields.length}>
+        <template for:each={amlfields} for:item="record">
+            
+            <p key={record.apiName} class="normal2">
+                
+            <a href={record.recordUrl}  class="normal" style="margin-left: 15px ; padding-top: 20px; padding-right: 10px; padding-left: -10px;">
+                {record.recordname}
+            </a>
+            - {record.recordrole}
+            
+              -  {record.recordstatus} 
+        </p>
+           <!-- <a href={record.recordcontacturl} key={record.apiName} class="normal1">
+                Related Contact - ({record.recordcontact})
+            </a>-->
+            <div key={record.apiName} style="margin-top: 10px; margin-bottom: 10px;">
+                <template for:each={record.recordFields} for:item="field">
+                <template if:false={field.hidden}>  
+                    <div key={field.apiName} class={field.colorclass} >
+                        <input style="margin-left: 15px ;" type="checkbox" class="blue-checkbox" data-field-api-name={field.apiName} onchange={handleChange} checked={field.isEmpty} disabled />
+                        <label style="margin-left: 15px ; padding-bottom: 20px;">{field.label}</label>
+                    </div>
+                </template>  
+                </template>         
+            </div> 
+        </template>
+    </template>
+    <template if:false= {amlfields.length}>
+        <div class="Error-AML">
+              {AmlError}
+        </div>
+    </template>
+      </lightning-card>
+    </template>
+
+    <lightning-card title="Listing Record Details" icon-name="custom:custom18">
+      <template if:true={listingfields.length}>
+        <p class="normal2"> Listing Record - 
+        <a href={listId}  class="normal1">
+                  {Listingtitle}
+          </a></p>
+          <div style="margin-top: 10px;">
+          <template for:each={listingfields} for:item="listingfield"  >
+      <div key={listingfield.apiName} class={listingfield.colorclass} > 
+          <input type="checkbox" style="margin-left: 15px" class="blue-checkbox" data-field-api-name={listingfield.apiName} onchange={handleChange} checked={listingfield.isEmpty} disabled/>
+          <label style="margin-left: 15px;">{listingfield.label}</label>
+      </div>
+  
+      </template> 
+      </div>
+  </template>
+     <template if:false= {listingfields.length}>
+          <div class="Error-AML">
+             {ListingError}
+          </div>
+      </template>
+
+    </lightning-card>
+    <div class="message-container">
+
+  </div> 
+</div>
+</template>
+
+    <template if:false={hideNextButton}>
+        <footer class="slds-modal__footer">
+
+                <lightning-button
+                style="padding-right: 10px;"
+                    variant="brand"
+                    label="Cancel"
+                    title="Cancel"
+                    onclick={handlecancel}
+                ></lightning-button>
+          <lightning-button
+          style="text-align:right;"
+    
+              variant="brand"
+              label="Next"
+              title="Next"
+              onclick={handleNext}
+              hidden={isButtonDisabled}
+          ></lightning-button>
+
+    </footer>
+  </template>
+  
+
+
+  <template if:true={showNextSection}>
+    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+  <!--  <section>-->
+        
+      <div >
+        <lightning-card title="Document Verication" icon-name="custom:custom18">
+          <!-- Add your checkbox and button code here -->
+          <div >
+           <!--  <input  style="transform: scale(1.4); margin-left: 15px ; padding-left: 15px; padding-bottom: 40px; padding-Top: 10px;"  type="checkbox"  onchange={handleCheckboxChange} ></input>
+        -->    <label style="margin-left: 17px ; padding-bottom: 20px; font-size: 17px; ">{secondtitle} </label>
+            <lightning-formatted-rich-text value={DocCheck}></lightning-formatted-rich-text>
+        </div>
+
+        </lightning-card>
+      </div>
+   <!-- </section>-->
+</div>
+  </template>
+
+<template if:true={showNextSection}>
+<footer class="slds-modal__footer">
+    
+        <lightning-button
+            variant="brand"
+            style="padding-right: 10px;"
+            label="Cancel"
+            title="Cancel"
+            onclick={handlecancelstep2}
+        ></lightning-button>
+    <lightning-button class="button-container" variant="brand" label="Create Contract" onclick={handleSubmit}  hidden={isButtonDisabled}  ></lightning-button>
+</footer>
+</template>
+<!--disabled={hide} -->
+
+      
+    </div>  
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    </template>
