@@ -1,0 +1,1198 @@
+<template>
+    <!--<div class="slds-m-around_medium">
+      <p>User Id:</p>
+      {userId}
+      {varProfileName}
+  </div>
+ <div class="div1">-->
+      <template if:true={desktopView}>
+      <template if:false={nodata}>
+          <div class="slds-box slds-box_x-small" style="background-color: white;">
+              <h1 class="slds-align_absolute-center" ><strong>INVENTORY MANAGEMENT</strong></h1>
+          </div>
+      
+          <div>
+              <template if:true={onlyAdminAndSalesDirector} >
+                  <div class="slds-grid slds-p-around_x-small" style="background-color: white;">
+                      <div class="slds-col slds-size_1-of-6">
+                          <template if:true={typeValues.data}>
+                              <div class="filterClass slds-p-around_xx-small" >
+                                  <lightning-combobox 
+                                  name="Project"
+                                  label="Project"
+                                  value={selectedProjectName}
+                                  placeholder="Select Project"
+                                  options={options}
+                                  onchange={handleValueChange} 
+                                  field-level-help="Please select project"></lightning-combobox>
+                              </div>
+                         </template> 
+                      </div>
+                      <template if:false={isAgent} >
+                      <div class="slds-col slds-size_1-of-6 slds-p-left_xx-small" style="padding-top: 27px;">
+                          <!-- <lightning-button class="slds-p-right_small" label="View Details" variant="neutral" onclick={viewProject}></lightning-button> -->
+                       <lightning-button class="slds-p-right_small"  slot="actions"  label="Add New Project" variant="brand" onclick={handleProject}></lightning-button>
+                      </div>  
+                  </template>
+                      <div class="slds-col slds-size_4-of-6">
+                          <!-- <lightning-button class="slds-p-right_small" label="View Details" variant="neutral" onclick={viewProject}></lightning-button> -->
+                       <!-- <lightning-button class="slds-p-right_small"  slot="actions"  label="Add New Project" variant="brand" onclick={handleProject}></lightning-button> -->
+                      </div>  
+                  </div>
+                 
+                  <div>
+                      <div style="background-color: white;">
+                          <template if:true={showProject}>
+                              <!--<lightning-card> --> 
+                                   <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open" style="color:brown;">
+                                       <div class="slds-modal__container" >
+                                           <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-border " title="Close" onclick={handleSucces}>
+                                               <lightning-icon icon-name="utility:close"
+                                                   label="close"
+                                                   alternative-text="close"
+                                                   variant="success"
+                                                   size="small" >
+                                               </lightning-icon>
+                                               <span class="slds-assistive-text">Close</span>
+                                           </button>
+                                          <div class="slds-p-around_x-small" style="background-color: white; border: 3px; border-color:black">
+                                               <lightning-record-form                         
+                                               fields={projFields}
+                                               object-api-name={ObjectName}
+                                               onsuccess={handleSucces}
+                                               oncancel={handleSucces}>
+                                               </lightning-record-form>
+                                           </div> 
+                                       </div>
+                                   </section>
+                               <!-- </lightning-card>  -->
+                           </template>
+                      </div>
+                      
+                   <!--  <div style="background-color: white;">
+                          <template if:true={showprojectData} >
+                              <lightning-record-form 
+                                  record-id={projRecId} 
+                                  fields={projFields}
+                                  object-api-name={ObjectName}
+                                  columns="1"
+                                  mode="readonly">
+                              </lightning-record-form>
+                          </template>
+                      </div> --> 
+                  </div>
+              </template>
+                   
+                  <lightning-layout>
+
+                  <lightning-layout-item flexibility="auto" size={sizeVar} class="slds-p-top_x-small">
+                      <div class="slds-p-around_x-small" style="background-color: white;" >
+                          <div class="slds-grid">
+                              <div class="slds-col slds-float_right slds-p-around_x-small">
+                                  <template if:true={onlyAdmin} >
+                                  <lightning-button slot="actions" label="Add New Unit" variant="brand" onclick={handleNewProperty} disabled={disableOption} > </lightning-button> 
+                              </template> 
+                              &nbsp;&nbsp;&nbsp;
+                                    <lightning-button slot="actions" label="Create CIF" variant="brand" onclick={handleCreateCIF}></lightning-button>
+                                   
+                              &nbsp;&nbsp;&nbsp;
+                              <lightning-button variant="destructive" label="Reset" onclick={resetResult}></lightning-button>
+                              </div>
+                                  
+                              </div>
+                      <template if:true={showAddNewproperty}>
+                          <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" aria-hidden="true" class="slds-modal slds-fade-in-open" style="color:brown;">
+                              <div class="slds-modal__container slds-scrollable_y" >
+                                  <header class="slds-modal__header">
+                                      <b><h1 class="slds-align_absolute-center" ><strong>New Property</strong></h1></b>
+                                  <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-border " title="Close" onclick={closeAddNewProperty}>
+                                      <lightning-icon icon-name="utility:close"
+                                          label="close"
+                                          alternative-text="close"
+                                          variant="success"
+                                          size="small" >
+                                      </lightning-icon>
+                                      <span class="slds-assistive-text">Close</span>
+                                  </button>
+                              </header>
+                              <div class="slds-modal__content slds-p-around_medium">
+                                  <c-add-property-comp  oncancelevent={closeAddNewProperty}></c-add-property-comp>
+                      </div> 
+                  </div>
+              </section>
+                      
+                  </template>
+
+                          <div class="slds-grid slds-wrap">
+                              <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small">
+                                  <lightning-input type="search" label="Search Unit" value={searchedUnit}  onchange={handleSearch} oncommit={clearData} field-level-help={label.SearchUnitHelpText}></lightning-input>
+                              </div>
+                              <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small">
+                                  <lightning-input type="search" label="Search Unit Series" value={searchedUnitSeries} onchange={handleValueChange} oncommit={clearData} field-level-help={label.SearchUnitSeriesHelpText}></lightning-input>
+                              </div>
+                              <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small">
+                                  <lightning-input type="search" label="Search Tower" value={searchedTower} onchange={handleValueChange} oncommit={clearData} field-level-help="Please search tower"></lightning-input>
+                              </div>
+                              <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small">
+                                  <lightning-input type="search" label="Search View" value={selectedViewValue} onchange={handleValueChange} oncommit={clearData} field-level-help="Please search view"></lightning-input>
+                              </div>
+                              <div class="slds-col slds-size_3-of-12">
+                                  <template if:true={noOfBedValues.data}>
+                                      <div class="filterClass slds-p-around_xx-small" >
+                                          <lightning-combobox 
+                                          name="No of Beds"
+                                          label="No of Beds"
+                                          value={selectedBedValue}
+                                          placeholder="Select Type"
+                                          options={bedOptions}
+                                          onchange={handleValueChange} 
+                                          field-level-help="Please select number of beds"></lightning-combobox>
+                                      </div>
+                                  </template>
+                              </div>
+                              <!--
+                              <div class="slds-col slds-size_3-of-12">
+                                  <template if:true={view.data}>
+                                      <div class="filterClass slds-p-around_xx-small" >
+                                          <lightning-combobox 
+                                          name="View"
+                                          label="View"
+                                          value={selectedViewValue}
+                                          placeholder="Select View"
+                                          options={view.data.values}
+                                          onchange={handleValueChange} ></lightning-combobox>
+                                      </div>
+                                  </template>
+                              </div>
+                              -->
+                              <div class="slds-col slds-size_3-of-12">
+                                  <template if:false={agentOnlyRec}>
+                                  <template if:true={statusValues.data}>
+                                      <div class="filterClass slds-p-around_xx-small">
+                                          <lightning-combobox
+                                          name="Status"
+                                          label="Status"
+                                          value={selectedStatusValue}
+                                          placeholder="Select Status"
+                                          options={statusValues.data.values}
+                                          onchange={handleValueChange} 
+                                          field-level-help="Please select status of unit"></lightning-combobox>
+                                      </div>
+                                  </template>
+                              </template>
+                              <template if:true={agentOnlyRec}>
+                                  <template if:true={statusValues.data}>
+                                      <div class="filterClass slds-p-around_xx-small">
+                                          <lightning-combobox
+                                          name="Status"
+                                          label="Status"
+                                          value={selectedStatusValue}
+                                          placeholder="Select Status"
+                                          options={statusOptions}
+                                          onchange={handleAgentStatusChange} 
+                                          field-level-help="Please select status of units"></lightning-combobox>
+                                      </div>
+                                  </template>
+                              </template>
+                              </div>
+                              <div class="slds-col slds-size_3-of-12">
+                                  <template if:true={floorType.data}>
+                                      <div class="filterClass slds-p-around_xx-small" >
+                                          <lightning-combobox 
+                                          name="Floor Type"
+                                          label="Floor Type"
+                                          value={selectedFloorTypValue}
+                                          placeholder="Select Floor Type"
+                                          options={floorType.data.values}
+                                          onchange={handleValueChange} 
+                                          field-level-help="Please select floor type"></lightning-combobox>
+                                      </div>
+                                  </template>
+                              </div>
+                              
+                          </br>
+
+                          </div>
+                          <template if:false={hidePropertyDetails}>
+                              <div class="slds-p-around_x-small">
+                                  
+                                  <lightning-datatable
+                                      key-field="id"
+                                      data-id="selection"
+                                      data={tableData}
+                                      columns={columns}
+                                      sorted-by={sortedBy}
+                                      sorted-direction={sortDirection}
+                                      hide-checkbox-column="true" onsort={handleSort}
+                                      onrowaction={handleRowAction}>
+                                  </lightning-datatable>
+                                  <!--
+                                  <lightning-datatable
+                                      key-field="id"
+                                      data-id="selection"
+                                      data={tableData}
+                                      columns={columns}
+                                      hide-checkbox-column="true"
+                                      onrowaction={handleRowAction}>
+                                  </lightning-datatable>
+                                  -->
+                              </div>
+                              <!-- Pagination -->
+                              <div class="slds-align_absolute-center"> 
+                                  <div class="slds-p-right_xx-small">
+                                           
+                                      <lightning-button label="Prev"
+                                      disabled={isPrev} onclick={handlePreviousPage}
+                                                          variant="brand"
+                                                          icon-name="utility:back"
+                                                          name="prev"></lightning-button>  
+                                  </div>
+                                  <span class="slds-badge slds-badge_lightest">
+                                      {recordStart}-{recordEnd} of {totalRecords} | Page {pageNumber} of {totalPages}
+                                  </span>
+                                  <div class="slds-p-left_xx-small">
+                                      <lightning-button label="Next"
+                                      disabled={isNext} onclick={handleNextPage}
+                                                          variant="brand"
+                                                          icon-name="utility:forward"
+                                                          icon-position="right"
+                                                          name="next"></lightning-button>
+                                  </div>
+                              </div>  
+                          </template>
+                      </div>
+                    <!-- <c-propertypaginations records={dataList} record-size="10" onupdate={updateHandler}></c-propertypaginations> -->
+                  </lightning-layout-item>  
+                  <template if:true={showDetails}>
+                  <lightning-layout-item flexibility="auto" size="6" class="slds-p-top_x-small slds-p-left_small">
+                      
+                          <template if:true ={openEditRecord}>
+                              <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" aria-hidden="true" class="slds-modal slds-fade-in-open" style="color:brown;">
+                                  <div class="slds-modal__container slds-scrollable_y" >
+                                      <header class="slds-modal__header"><b><h2><Strong>Edit Property</Strong></h2></b>
+                                      <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-border " title="Close" onclick={closeEditForm}>
+                                          <lightning-icon icon-name="utility:close"
+                                              label="close"
+                                              alternative-text="close"
+                                              variant="success"
+                                              size="small" >
+                                          </lightning-icon>
+                                          <span class="slds-assistive-text">Close</span>
+                                      </button>
+                                  </header>
+                                  <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                    <!-- <div class="slds-p-around_x-small" style="background-color: white; border: 3px; border-color:black">     -->
+                                      <template if:true={editPermission} >
+                                          <lightning-record-form 
+                                         record-id={storeRecId} 
+                                         fields={fields3}
+                                         object-api-name={objectApiName}
+                                         columns="2"
+                                         onsuccess={handleEditSuccess}
+                                         oncancel={closeEditForm}
+                                         mode="edit">
+                                     </lightning-record-form>
+                                     </template>
+                                     <template if:true={adminEditpermission} >
+                                         <lightning-record-form 
+                                        record-id={storeRecId} 
+                                        fields={fields4}
+                                        object-api-name={objectApiName}
+                                        columns="2"
+                                        onsuccess={handleEditSuccess}
+                                        oncancel={closeEditForm}
+                                        mode="edit">
+                                     </lightning-record-form>
+                                     </template>
+                          </div> 
+                      </div>
+                  </section>
+                          </template>
+                          <div class="slds-grid slds-grid_align-spread" style="background-color: white;">
+                              <div class="slds-col slds-float_right ">
+                                  <h1 class="slds-p-around_small " ><strong style="font-size: 15px;" >Unit Details</strong></h1>
+                              </div>
+                              
+                              <div class="slds-col slds-float_right slds-p-around_x-small" >
+                                  <template if:true ={onlyAdmin}>
+                                     <lightning-button data-id="storeRecId" variant="brand" label="Edit Unit" onclick={handleEditClick} ></lightning-button>
+                                  </template>
+                                  <!--
+                                  <template if:true={showViewUnitButton} >
+                                  &nbsp;&nbsp;&nbsp;
+                                  <lightning-button data-id="storeRecId" variant="brand" label="View Unit Details" onclick={ViewUnitDetails}></lightning-button>
+                                  </template>
+                                  -->
+                                  <template if:true={isNotProjectDevPrfle} >
+                                  <!-- <lightning-button class="slds-p-right_small" data-id="storeRecId" variant="brand" label="Add Documents" onclick={handleDocument} disabled={isAddDoc} ></lightning-button> -->
+                                  &nbsp;&nbsp;&nbsp;
+                                  <lightning-button data-id="storeRecId" variant="brand" label="Request to Red List" onclick={handleClick} disabled={isButtonDisabled} ></lightning-button>
+                                  <!-- &nbsp;&nbsp;&nbsp;
+                                  <lightning-button data-id="storeRecId" variant="brand" label="View Unit Details" onclick={ViewUnitDetails}></lightning-button>-->
+                                  <!-- &nbsp;&nbsp;&nbsp;
+                                  <lightning-button data-id="storeRecId storeProjId" class="button-container" variant="brand" label="Create Inquiry" onclick={handleCreateInquiry} ></lightning-button> -->
+                              </template>
+                              <lightning-button-icon icon-name="utility:close"  size="large" variant="bare" alternative-text="Close" class="slds-m-left_xx-small" onclick={handleCollapse}></lightning-button-icon>
+                                  <template if:true={isShowDocument}>
+                                  <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open" style="color:brown;">
+                                      <div class="slds-modal__container"  >
+                                          <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeManageDocument}>
+                                              <lightning-icon icon-name="utility:close"
+                                              label="close"
+                                                  alternative-text="close"
+                                                  variant="inverse"
+                                                  size="small" ></lightning-icon>
+                                              <span class="slds-assistive-text">Close</span>
+                                          </button>
+                                          <c-manage-documents getidfromparent={storeRecId} onmanagedocument={closeManageDocument}></c-manage-documents>
+                                          </div>
+                                          </section>
+                              </template>
+                              <!-- <template if:false={showNew}>
+                                      <lightning-button variant="brand" label="Block" onclick={handleClick} disabled={disableButton}></lightning-button>
+                                  </template> -->
+                                  <template if:true={showNew}>
+                                      <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+                                          <div class="slds-modal__container">
+                                              <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeManageReservation}>
+                                                  <lightning-icon icon-name="utility:close"
+                                                      label="close"
+                                                      alternative-text="close"
+                                                      variant="inverse"
+                                                      size="small" ></lightning-icon>
+                                                  <span class="slds-assistive-text">Close</span>
+                                              </button>
+                                              <c-manage-block getidfromparent={storeRecId} getdatafromparent={passDataValue} onmanageproperty={closeManageReservation}></c-manage-block>
+                                          </div>
+                                      </section>
+                                  </template>
+                              </div>
+                          </div>
+                       <!--   <lightning-accordion class="Property Data"
+                          onsectiontoggle={handleToggleSection}
+                          active-section-name="A">
+                          <lightning-accordion-section name="A" label="Property Information" class="childtheme"> -->
+                              <lightning-tabset variant="scoped">
+                                  <lightning-tab label="Unit Information" >
+                          <div class="childtheme" >
+                           <!--   <template if:false ={editPermission}> -->
+                             <lightning-record-form 
+                                  record-id={storeRecId} 
+                                  fields={fields1}
+                                  object-api-name={objectApiName}
+                                  columns="4"
+                                  mode="readonly">
+                              </lightning-record-form>
+                       <!--  </template> --> 
+                        <!--  <template if:true ={editPermission}>
+                              <lightning-record-form 
+                                   record-id={storeRecId} 
+                                   fields={fields1}
+                                   object-api-name={objectApiName}
+                                   columns="4"
+                                   mode="view">
+                               </lightning-record-form>
+                           </template> -->
+                          </div>
+                   </lightning-tab>
+                   <!--   </lightning-accordion-section>
+                      <lightning-accordion-section name="B" label="Additional Information" class="childtheme"> -->
+                          <lightning-tab label="Additional Information" >
+                      <div class="childtheme" >
+                       <!--  <template if:false ={editPermission}> --> 
+                          <lightning-record-form 
+                              record-id={storeRecId} 
+                              fields={fields2}
+                              object-api-name={objectApiName}
+                              columns="4"
+                              mode="readonly">
+                          </lightning-record-form>
+                    <!--  </template> -->
+                  <!--    <template if:true ={editPermission}>
+                          <lightning-record-form 
+                              record-id={storeRecId} 
+                              fields={fields2}
+                              object-api-name={objectApiName}
+                              columns="4"
+                              mode="view">
+                          </lightning-record-form>
+                      </template> -->
+                      </div>
+                  </lightning-tab>
+                  <!--    </lightning-accordion-section> -->
+                      <template if:true={onlyAdmin}>
+                <!--      <lightning-accordion-section name="C" label="Document Informations" class="childtheme"> -->
+                  <template if:false ={hidePayment}>
+                  <lightning-tab label="Documents" onactive ={callChildMethod}>
+                          <div class="childtheme" >
+                              <div class="slds-m-around_medium">
+                                  <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                                      aria-labelledby="element-with-table-label other-element-with-table-label" if:false={prview}>
+                                       <thead>
+                                          <tr class="slds-line-height_reset">
+                                              <th scope="col">
+                                                  <div class="slds-truncate" title="Activity"> Activity</div>
+                                              </th>
+                                              <th  scope="col">
+                                                  <div class="slds-truncate" title="Date added">Date added</div>
+                                              </th>
+                                              <th  scope="col">
+                                                  <div class="slds-truncate" title="Days Pending">Days Pending</div>
+                                              </th>
+                                              <th  scope="col">
+                                                  <div class="slds-truncate" title="file preview">Preview</div>
+                          
+                                              </th>
+                                         <!--     <th  scope="col">
+                                                  <div class="slds-truncate" title="file preview">Upload New</div>
+                          
+                                              </th> -->
+                                          </tr>
+                                      </thead> 
+                                      <template if:true={isDocData}>
+                                      <template for:each={DocListData} for:item="file" >
+                                          <tr key={file.id}>
+                                              <th data-label="Activity" scope="row">
+                                              <lightning-input
+                                                   type="text" 
+                                                   variant="label-hidden" 
+                                                   label=" Activity" 
+                                                   name="Activity" 
+                                                   value={file.Documents_Activity__c}
+                                                   disabled=true
+                                                   readonly
+                                                  data-id={file.Id}>
+                                              </lightning-input>
+                                              </th>
+                                              <th data-label="Date added" scope="row">
+                                                  <lightning-input
+                                                       type="text" 
+                                                       variant="label-hidden" 
+                                                       label=" Date added" 
+                                                       name="Date added" 
+                                                       value={file.CD_Date_Added__c}
+                                                       disabled=true
+                                                       readonly
+                                                      data-id={file.Id}>
+                                                  </lightning-input>
+                                                  </th>
+                                                  <th data-label="Days Pending" scope="row">
+                                                      <lightning-input
+                                                           type="text" 
+                                                           variant="label-hidden" 
+                                                           label=" Days Pending" 
+                                                           name="Days Pending" 
+                                                           value={file.CD_Days_Pending__c}
+                                                           disabled=true
+                                                           readonly
+                                                          data-id={file.Id}>
+                                                      </lightning-input>
+                                                      </th>
+                                              <th data-label="File upload" scope="row">
+                                               <lightning-button 
+                                                  label="View" 
+                                                  name="view file" 
+                                                  data-id={file.Id}
+                                                  icon-name="utility:file" 
+                                                  onclick={handleCallApexToPreview}>
+                                              </lightning-button>
+                                              </th>
+                                        <!--      <th data-label="File upload" scope="row">
+                                                      <lightning-file-upload 
+                                                      name="fileUploader" 
+                                                      accept={acceptedFormats} 
+                                                      data-id={file.Id}
+                                                      record-id={file.Id} 
+                                                      onuploadfinished={handleUploadFinished}
+                                                      >
+                                                      </lightning-file-upload>
+                                              </th> -->
+                                          </tr>
+                                      </template>
+                                  </template>
+                                  </table>
+                              </div>
+                            <!--  <lightning-button class="slds-p-right_small" data-id={storeRecId} variant="brand" label="Add Documents" onclick={handleDoc} disabled={isAddDoc}  ></lightning-button> -->
+                          <!--  <template if:true={openDocument}> -->
+                              
+                              <lightning-button label="Add Document" variant="brand" onclick={openDocPage}></lightning-button>
+                              <template if:true={openDocument}>
+                                  <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" aria-hidden="true" class="slds-modal slds-fade-in-open" style="color:brown;">
+                                      <div class="slds-modal__container slds-scrollable_y" >
+                                          <header class="slds-modal__header">
+                                          <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-border " title="Close" onclick={closeDocPage}>
+                                              <lightning-icon icon-name="utility:close"
+                                                  label="close"
+                                                  alternative-text="close"
+                                                  variant="success"
+                                                  size="small" >
+                                              </lightning-icon>
+                                              <span class="slds-assistive-text">Close</span>
+                                          </button>
+                                      </header>
+                                      <div class="slds-modal__content slds-var-p-around_xx-small">
+                                          <c-manage-document-activity getidfromparent={storeRecId} getdatafromparent={passDataValue} onmanagedocument={closeDocPage}></c-manage-document-activity>
+                              </div> 
+                          </div>
+                      </section>
+                              </template>
+              <!-- <c-manage-documents getidfromparent={storeRecId} onmanagedocument={closeManageDocument}></c-manage-documents> -->
+                        <!--  </template> -->
+                          </div>
+                      </lightning-tab>
+                  </template>
+                      <template if:false={hidePayment}>
+                      <lightning-tab label="Payment" onactive={callActivities} >
+               <!--  <c-managa-activity-payment getdatafromparent={passDataValue} getidfromparent={storeRecId}></c-managa-activity-payment> -->
+                        <!--  <div class="childtheme" > -->
+                       <lightning-card title="Payment Details">
+                              <lightning-record-form record-id={storeRecId} 
+                              fields={paymentFields}
+                              object-api-name={objectApiName}
+                              columns="3"
+                              mode="readonly">
+                        </lightning-record-form>
+                          </lightning-card>
+                             <lightning-card>
+                              <div if:true={showLoadingSpinner}>
+                                  <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                              </div>
+                           <template if:true={isActivityData} > 
+                              <div class="slds-p-around_x-small">
+                                  <lightning-datatable
+                                      key-field="id"
+                                      data-id="id"
+                                      data={activitiesData}
+                                      columns={columns2}
+                                      hide-checkbox-column="true"
+                                   >
+                                  </lightning-datatable>
+                              </div>
+                          </template> 
+                          <lightning-button label="Add Payment" variant="brand" onclick={openPaymentPage}></lightning-button>
+                          <template if:true={openPayment}>
+                              <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" aria-hidden="true" class="slds-modal slds-fade-in-open" style="color:brown;">
+                                  <div class="slds-modal__container slds-scrollable_y" >
+                                      <header class="slds-modal__header">
+                                      <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-border " title="Close" onclick={closePaymentPage}>
+                                          <lightning-icon icon-name="utility:close"
+                                              label="close"
+                                              alternative-text="close"
+                                              variant="success"
+                                              size="small" >
+                                          </lightning-icon>
+                                          <span class="slds-assistive-text">Close</span>
+                                      </button>
+                                  </header>
+                                  <div class="slds-modal__content slds-var-p-around_xx-small">
+                                      <c-managa-activity-payment getidfromparent={storeRecId} getdatafromparent={passDataValue} onmanagepayment={closePaymentPage}></c-managa-activity-payment>
+                          </div> 
+                      </div>
+                  </section>
+
+                          </template>
+                      
+                             </lightning-card> 
+                        <!--  </div> -->
+                      </lightning-tab>
+                  </template>
+                  <!--    </lightning-accordion-section> -->
+      
+                  </template>
+                  
+              </lightning-tabset>
+                   <!--   </lightning-accordion> -->
+      
+                      <!-- <div class="slds-p-around_xx-small slds-align_absolute-center" style="background-color: white;">
+                          <lightning-button variant="brand" label="Inquiry" title="Successful action" onclick={handleClick}></lightning-button>
+                      </div> -->
+                      <div>
+                          <c-agent-pending-approval-req-com> </c-agent-pending-approval-req-com>
+      
+                      </div>
+                  </lightning-layout-item>
+              </template>
+               </lightning-layout>
+              <!-- <div class="slds-p-around_xx-small" >
+                  <template if:true={showNew}>
+                      <c-manage-reservations getidfromparent={storeRecId} onmanageproperty={closeManageReservation}></c-manage-reservations>
+                  </template>
+              </div> -->
+          </div>
+      </template>
+      <template if:true={nodata}>
+          <lightning-layout>
+              <div style="height:15rem">
+                  <br /><br /><br /><br />
+                  <strong style="color:red;"> <center> You do not have access for this page.Please contact administrator</center></strong>
+                  <br /><br /><br /><br />
+              </div>
+          </lightning-layout>
+      </template>   
+</template>    
+<template if:true={ismobileRendered}>
+  <template if:true={nodata}>
+      <lightning-layout>
+          <div style="height:15rem">
+              <br /><br /><br /><br />
+              <strong style="color:red;"> <center> You do not have access for this page.Please contact administrator</center></strong>
+              <br /><br /><br /><br />
+          </div>
+      </lightning-layout>
+  </template>   
+  <template if:false={nodata}>
+<div class="slds-box slds-box_x-small" style="background-color:darkgray;">
+       <h1 class="slds-align_absolute-center" ><strong>INVENTORY MANAGEMENT</strong></h1>
+   </div>
+   <template if:false={navigateNextPage}>
+      <template if:true={onlyAdmin} >
+          <div class="slds-float_right">
+          <lightning-button class="slds-p-horizontal_x-small" slot="actions" label="Add New Property" variant="Brand" onclick={handleMobileNavigate} disabled={disableOption} > </lightning-button> 
+      </div></template>
+  <br>
+<br>
+      <template if:true={onlyAdminAndSalesDirector} >
+          <div class="filterClass slds-var-p-around_xxx-small" style="background-color: white;">
+              <lightning-layout multiple-rows="false">
+              <lightning-layout-item size="6" small-device-size="2">
+           <!--   <div class="slds-col slds-size_3-of-6"> -->
+                  <template if:true={typeValues.data}>
+                      <div class="filterClass slds-p-left_xxx-small" >
+                          <lightning-combobox 
+                          name="Project"
+                          label="Project"
+                          value={selectedProjectName}
+                          placeholder="Select Project"
+                          options={options}
+                          onchange={handleValueChange} ></lightning-combobox>
+                      </div>
+                 </template> 
+         <!--     </div> -->
+          </lightning-layout-item>
+          <lightning-layout-item size="6" small-device-size="2">
+           <!--   <div class="slds-col slds-size_3-of-6"> -->
+              <div class=" slds-p-left_xx-small" style="padding-top: 32px;">
+                  <!-- <lightning-button class="slds-p-right_small" label="View Details" variant="neutral" onclick={viewProject}></lightning-button> -->
+               <lightning-button class="slds-p-top_x-large"  slot="actions"  label="Add New Project" variant="brand" onclick={handleProject}></lightning-button>
+          <!--    </div>  -->
+          </div>
+      </lightning-layout-item>
+          </lightning-layout>
+          <template if:true={mobileNewProperty}>
+              <div class="slds-align_absolute-center">
+              <lightning-card   title="Property Details">
+              <div class="childtheme">
+              <lightning-record-form
+              object-api-name={objectApiName}
+              fields={newPropertyFields}
+              onsuccess={handleMobileSuccess}
+              oncancel={handleMobileCancel}
+              columns="2">
+          </lightning-record-form>
+          </div>
+              </lightning-card>
+          </div>
+          </template>
+              <div class="slds-col slds-size_4-of-6">
+                  <!-- <lightning-button class="slds-p-right_small" label="View Details" variant="neutral" onclick={viewProject}></lightning-button> -->
+               <!-- <lightning-button class="slds-p-right_small"  slot="actions"  label="Add New Project" variant="brand" onclick={handleProject}></lightning-button> -->
+              </div>  
+          </div>
+         
+          <div>
+              <div style="background-color: white;">
+                  <template if:true={showProject}>
+                      <!--<lightning-card> --> 
+                           <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open" style="color:brown;">
+                               <div class="slds-modal__container" >
+                                   <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-border " title="Close" onclick={handleSucces}>
+                                       <lightning-icon icon-name="utility:close"
+                                           label="close"
+                                           alternative-text="close"
+                                           variant="success"
+                                           size="small" >
+                                       </lightning-icon>
+                                       <span class="slds-assistive-text">Close</span>
+                                   </button>
+                                  <div class="slds-p-around_x-small" style="background-color: white; border: 3px; border-color:black">
+                                       <lightning-record-form                         
+                                       fields={projFields}
+                                       object-api-name={ObjectName}
+                                       onsuccess={handleSucces}
+                                       oncancel={handleSucces}>
+                                       </lightning-record-form>
+                                   </div> 
+                               </div>
+                           </section>
+                       <!-- </lightning-card>  -->
+                   </template>
+              </div>
+              
+           <!--  <div style="background-color: white;">
+                  <template if:true={showprojectData} >
+                      <lightning-record-form 
+                          record-id={projRecId} 
+                          fields={projFields}
+                          object-api-name={ObjectName}
+                          columns="1"
+                          mode="readonly">
+                      </lightning-record-form>
+                  </template>
+              </div> --> 
+          </div>
+      </template>
+    <div class="slds-p-around_x-small">
+       <lightning-layout multiple-rows="true">
+       
+           <lightning-layout-item size="12" small-device-size="1" class="slds-scrollable_y">
+              <div class="slds-col slds-size_12-of-12 slds-p-around_xx-small">
+                  <lightning-input class ="slds-p-around_xxx-small" type="search" label="Search Property" onchange={handleSearch} oncommit={clearData} ></lightning-input>
+              </div>
+               <div class="slds-col slds-size_12-of-12 slds-p-around_xx-small">
+                  <lightning-input type="search" label="Search Unit Series" value={searchedUnitSeries} onchange={handleValueChange} oncommit={clearData} field-level-help={label.SearchUnitSeriesHelpText}></lightning-input>
+              </div>
+              <div class="slds-col slds-size_12-of-12 slds-p-around_xx-small">
+                  <lightning-input type="search" label="Search Tower" value={searchedTower} onchange={handleValueChange} oncommit={clearData} field-level-help="Please search tower"></lightning-input>
+              </div>
+              <div class="slds-col slds-size_12-of-12 slds-p-around_xx-small">
+                  <lightning-input type="search" label="Search View" value={selectedViewValue} onchange={handleValueChange} oncommit={clearData} field-level-help="Please search view"></lightning-input>
+              </div>
+              
+               <!-- <template if:true={typeValues.data}>
+                   <div class="filterClass">
+                       <lightning-combobox
+                       name="Property Type"
+                       label="Property Type"
+                       value={selectedTypeValue}
+                       placeholder="Select Type"
+                       options={typeValues.data.values}
+                       onchange={handleValueChange} ></lightning-combobox>
+                   </div>
+               </template> -->
+               <template if:true={noOfBedValues.data}>
+                   <div class="filterClass slds-p-left_xxx-small" >
+                       <lightning-combobox 
+                       name="No of Beds"
+                       label="No of Beds"
+                       value={selectedBedValue}
+                       placeholder="Select Type"
+                       options={bedOptions}
+                       onchange={handleValueChange} ></lightning-combobox>
+                   </div>
+               </template>
+               <template if:true={statusValues.data}>
+                   <div class="filterClass slds-p-left_xxx-small">
+                       <lightning-combobox
+                       name="Status"
+                       label="Status"
+                       value={selectedStatusValue}
+                       placeholder="Select Status"
+                       options={statusValues.data.values}
+                       onchange={handleValueChange} ></lightning-combobox>
+                   </div>
+                  
+               </template>
+                  <template if:true={floorType.data}>
+                      <div class="filterClass slds-p-left_xxx-small" >
+                          <lightning-combobox 
+                          name="Floor Type"
+                          label="Floor Type"
+                          value={selectedFloorTypValue}
+                          placeholder="Select Floor Type"
+                          options={floorType.data.values}
+                          onchange={handleValueChange} 
+                          field-level-help="Please select floor type"></lightning-combobox>
+                      </div>
+                  </template>
+              <br/>
+               <lightning-button variant="destructive" label="Reset" onclick={resetResult}></lightning-button>
+               <br/>
+               <template if:true ={dataAvailable} >
+                  <br/>
+                <template for:each={tableData} for:item="property">
+                  
+                  <div key={property.Id} class="slds-p-bottom_x-small" data-id={property.Id}>
+                       
+                      <lightning-card >
+                          <p><b><lightning-button label={property.Name} variant = "base" data-id={property.Id} onclick={handleCardClick} ></lightning-button></b> </p>
+                          <ul data-id={property.Id} class="slds-list_horizontal slds-has-dividers_right">
+                              <li class="slds-item"><b>{property.CD_Bedrooms__c}</b></li>
+                              <li class="slds-item"><b>{property.Type__c}</b></li>
+                              <li class="slds-item"><b>{property.CD_Sales_Price__c}</b></li>
+                              <li class="slds-item"><b>{property.Status__c}</b></li>
+                          </ul>
+
+                             
+                          <!--<div data-id={property.Id}  >
+                           <p><b><lightning-button label={property.Name} variant = "base" data-id={property.Id} onclick={handleCardClick} ></lightning-button> </b></p>
+                           <p><b>{property.Type__c}</b></p>
+                           <p><b>{property.Status__c}</b></p>
+                            <p><b>{property.CD_Floor__c} Floors</b></p>
+                           <p><b>{property.CD_Sales_Price__c}</b></p>   
+                           <p><b>{property.CD_Bedrooms__c}</b></p>    
+                          </div>-->                   
+                       </lightning-card>
+                   </div>
+               </template>
+              </template>
+              <template if:false={dataAvailable}>
+                  <lightning-layout>
+                      <div style="height:15rem">
+                          <br /><br /><br /><br />
+                          <strong style="color:red;"> <center> No Data Available</center></strong>
+                          <br /><br /><br /><br />
+                      </div>
+                  </lightning-layout>
+              </template>
+               <!--    <div class="slds-float_right slds-grid slds-p-top_x-small slds-m-bottom_medium" >
+                       <lightning-button  variant="neutral"  title="First" label="First" icon-name="utility:left" icon-position="left"  disabled={disablePrevious} onclick={onFirst} ></lightning-button>
+                       <lightning-button  variant="neutral"  title="" label=""  icon-name="utility:chevronleft" icon-position="left"  disabled={disablePrevious} onclick={onPrev} ></lightning-button>
+                       <lightning-button class="slds-p-horizontal_x-small"  label="1"  onclick={processMe} ></lightning-button>
+                           <template iterator:it={pageList}>
+                               <lightning-button class="slds-p-horizontal_x-small"  key={it.value} label={it.value} onclick={processMe} ></lightning-button>
+                           </template>
+                       <lightning-button class="slds-p-horizontal_x-small" label={totalPages} onclick={processMe} ></lightning-button>
+                       <lightning-button variant="neutral" title="" label="" icon-name="utility:chevronright" icon-position="right" disabled={disableNext} onclick={onNext} ></lightning-button>
+
+                       <lightning-button variant="neutral" title="Last" label="Last" icon-name="utility:right" icon-position="right" disabled={disableNext}  onclick={onLast} ></lightning-button>
+                   </div>      -->
+                   <div class="slds-align_absolute-center"> 
+                      <div class="slds-p-right_xx-small">
+                               
+                          <lightning-button label="Prev"
+                          disabled={isPrev} onclick={handlePreviousPage}
+                                              variant="brand"
+                                              icon-name="utility:back"
+                                              name="prev"></lightning-button>  
+                      </div>
+                      <span class="slds-badge slds-badge_lightest">
+                          {recordStart}-{recordEnd} of {totalRecords} | Page {pageNumber} of {totalPages}
+                      </span>
+                      <div class="slds-p-left_xx-small">
+                          <lightning-button label="Next"
+                          disabled={isNext} onclick={handleNextPage}
+                                              variant="brand"
+                                              icon-name="utility:forward"
+                                              icon-position="right"
+                                              name="next"></lightning-button>
+                      </div>
+                  </div>  
+           </lightning-layout-item>
+       </lightning-layout>
+   </div>
+   </template>
+       <template if:true={navigateNextPage}>
+         
+       <lightning-layout>
+           <lightning-layout-item  size="2" small-device-size="1" class="slds-scrollable_y" style="height:50rem;width:24rem">
+              <template if:true ={openEditRecord}>
+                  <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" aria-hidden="true" class="slds-modal slds-fade-in-open" style="color:brown;">
+                      <div class="slds-modal__container slds-scrollable_y" >
+                          <header class="slds-modal__header">
+                          <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-border " title="Close" onclick={closeEditForm}>
+                              <lightning-icon icon-name="utility:close"
+                                  label="close"
+                                  alternative-text="close"
+                                  variant="success"
+                                  size="small" >
+                              </lightning-icon>
+                              <span class="slds-assistive-text">Close</span>
+                          </button>
+                      </header>
+                      <div class="slds-modal__content slds-p-around_xxx-small" >
+      
+                          <!-- <div class="slds-p-around_x-small" style="background-color: white; border: 3px; border-color:black">     -->
+  <template if:true={editPermission} >
+   <lightning-record-form 
+  record-id={storeRecId} 
+  fields={fields3}
+  object-api-name={objectApiName}
+  columns="1"
+  onsuccess={handleEditSuccess}
+  oncancel={closeEditForm}
+  mode="edit">
+</lightning-record-form>
+</template>
+<template if:true={adminEditpermission} >
+  <lightning-record-form 
+ record-id={storeRecId} 
+ fields={fields4}
+ object-api-name={objectApiName}
+ columns="1"
+ onsuccess={handleEditSuccess}
+ oncancel={closeEditForm}
+ mode="edit">
+</lightning-record-form>
+</template>
+              </div> 
+          </div>
+      </section>
+              </template>
+               <div class="childtheme"> 
+                   <lightning-button label="Back" aria-label="Back" class="sds-c-button-brand-color-background: purple;"
+                       onclick={closePropertyPage} ></lightning-button>
+                       <div class="slds-float_right" style="padding-left: 20;">
+                          <div class="slds-p-right_large" >
+                       <lightning-button data-id="storeRecId" variant="brand" label="Request to Red List" onclick={handleClick} disabled={isButtonDisabled} ></lightning-button></div></div>
+                       <template if:true ={onlyAdmin}>
+                          <lightning-button data-id="storeRecId" variant="brand" label="Edit Property" onclick={handleEditClick} ></lightning-button>
+                       </template>
+                      
+                   <lightning-card title="Property Details">  <template if:true={isNotProjectDevPrfle} >
+</template>
+                   <template if:true={showNew}>
+                       <c-manage-block getidfromparent={storeRecId} getdatafromparent={passDataValue} onmanageproperty={closeManageReservation}></c-manage-block>
+                  </template>
+                      
+               <lightning-tabset variant="scoped" class="tab-active slds-var-p-horizontal_xxx-small">
+                  <lightning-tab label="Property Information" class="slds-var-p-horizontal_xxx-small"  >
+                      <div class="childtheme" >
+                        <!--  <template if:false ={editPermission}> -->
+                         <lightning-record-form 
+                              record-id={storeRecId} 
+                              fields={fields1}
+                              object-api-name={objectApiName}
+                              columns="2"
+                              mode="readonly">
+                          </lightning-record-form>
+                    <!--  </template> -->
+                    <!--  <template if:true ={editPermission}>
+                          <lightning-record-form 
+                               record-id={storeRecId} 
+                               fields={fields1}
+                               object-api-name={objectApiName}
+                               columns="2"
+                               mode="view">
+                           </lightning-record-form>
+                       </template> -->
+                      </div>
+               </lightning-tab>
+               <!--   </lightning-accordion-section>
+                  <lightning-accordion-section name="B" label="Additional Information" class="childtheme"> -->
+                      <lightning-tab label="Additional Information" class="slds-var-p-horizontal_xxx-small">
+                  <div class="childtheme" >
+                      <template if:false ={editPermission}>
+                      <lightning-record-form 
+                          record-id={storeRecId} 
+                          fields={fields2}
+                          object-api-name={objectApiName}
+                          columns="2"
+                          mode="readonly">
+                      </lightning-record-form>
+                  </template>
+                  <template if:true ={editPermission}>
+                      <lightning-record-form 
+                          record-id={storeRecId} 
+                          fields={fields2}
+                          object-api-name={objectApiName}
+                          columns="2"
+                          mode="view">
+                      </lightning-record-form>
+                  </template>
+                  </div>
+              </lightning-tab>
+  <!--    </lightning-accordion-section> -->
+      <template if:true={onlyAdmin}>
+          <template if:false ={hidePayment}>
+<!--      <lightning-accordion-section name="C" label="Document Informations" class="childtheme"> -->
+  <lightning-tab label="Documents" onactive ={callChildMethod}>
+          <div class="childtheme" >
+              
+              <div class="slds-var-m-around_xxx-small">
+                  <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                      aria-labelledby="element-with-table-label other-element-with-table-label" if:false={prview}>
+                       <thead>
+                          <tr class="slds-line-height_reset">
+                              <th scope="col">
+                                  <div class="slds-truncate" title="Activity"> Activity</div>
+                              </th>
+                              <th  scope="col">
+                                  <div class="slds-truncate" title="Date added">Date added</div>
+                              </th>
+                              <th  scope="col">
+                                  <div class="slds-truncate" title="Days Pending">Days Pending</div>
+                              </th>
+                              <th  scope="col">
+                                  <div class="slds-truncate" title="file preview">Preview</div>
+          
+                              </th>
+                         <!--     <th  scope="col">
+                                  <div class="slds-truncate" title="file preview">Upload New</div>
+          
+                              </th> -->
+                          </tr>
+                      </thead> 
+                      <template if:true={isDocData}>
+                      <template for:each={DocListData} for:item="file" >
+                          <tr key={file.id}>
+                              <th data-label="Activity" scope="row">
+                              <lightning-input
+                                   type="text" 
+                                   variant="label-hidden" 
+                                   label=" Activity" 
+                                   name="Activity" 
+                                   value={file.Documents_Activity__c}
+                                   disabled=true
+                                   readonly
+                                  data-id={file.Id}>
+                              </lightning-input>
+                              </th>
+                              <th data-label="Date added" scope="row">
+                                  <lightning-input
+                                       type="text" 
+                                       variant="label-hidden" 
+                                       label=" Date added" 
+                                       name="Date added" 
+                                       value={file.CD_Date_Added__c}
+                                       disabled=true
+                                       readonly
+                                      data-id={file.Id}>
+                                  </lightning-input>
+                                  </th>
+                                  <th data-label="Days Pending" scope="row">
+                                      <lightning-input
+                                           type="text" 
+                                           variant="label-hidden" 
+                                           label=" Days Pending" 
+                                           name="Days Pending" 
+                                           value={file.CD_Days_Pending__c}
+                                           disabled=true
+                                           readonly
+                                          data-id={file.Id}>
+                                      </lightning-input>
+                                      </th>
+                              <th data-label="File upload" scope="row">
+                               <lightning-button 
+                                  label="View" 
+                                  name="view file" 
+                                  data-id={file.Id}
+                                  icon-name="utility:file" 
+                                  onclick={handleCallApexToPreview}>
+                              </lightning-button>
+                              </th>
+                        <!--      <th data-label="File upload" scope="row">
+                                      <lightning-file-upload 
+                                      name="fileUploader" 
+                                      accept={acceptedFormats} 
+                                      data-id={file.Id}
+                                      record-id={file.Id} 
+                                      onuploadfinished={handleUploadFinished}
+                                      >
+                                      </lightning-file-upload>
+                              </th> -->
+                          </tr>
+                      </template>
+                  </template>
+                  </table>
+              </div>
+            <!--  <lightning-button class="slds-p-right_small" data-id={storeRecId} variant="brand" label="Add Documents" onclick={handleDoc} disabled={isAddDoc}  ></lightning-button> -->
+          <!--  <template if:true={openDocument}> -->
+              
+              <lightning-button label="Add Document" variant="brand" onclick={openDocPage}></lightning-button>
+            <!--  <lightning-button class="slds-p-right_small" data-id={storeRecId} variant="brand" label="Add Documents" onclick={handleDoc} disabled={isAddDoc}  ></lightning-button> -->
+          <!--  <template if:true={openDocument}> -->
+              <template if:true={openDocument}>
+                  <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" aria-hidden="true" class="slds-modal slds-fade-in-open" style="color:brown;">
+                      <div class="slds-modal__container slds-scrollable_y" >
+                          <header class="slds-modal__header">
+                          <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-border " title="Close" onclick={closeDocPage}>
+                              <lightning-icon icon-name="utility:close"
+                                  label="close"
+                                  alternative-text="close"
+                                  variant="success"
+                                  size="small" >
+                              </lightning-icon>
+                              <span class="slds-assistive-text">Close</span>
+                          </button>
+                      </header>
+                      <div class="slds-modal__content slds-var-p-around_xxx-small">
+                          <c-manage-document-activity getidfromparent={storeRecId} getdatafromparent={passDataValue} onmanagedocument={closeDocPage}></c-manage-document-activity>
+              </div> 
+          </div>
+      </section>
+              </template>
+<!-- <c-manage-documents getidfromparent={storeRecId} onmanagedocument={closeManageDocument}></c-manage-documents> -->
+        <!--  </template> -->
+          </div>
+      </lightning-tab>
+      </template>
+      <template if:false={hidePayment}>
+      <lightning-tab label="Payment" onactive={callActivities} class="slds-var-p-horizontal_xxx-small">
+<!--  <c-managa-activity-payment getdatafromparent={passDataValue} getidfromparent={storeRecId}></c-managa-activity-payment> -->
+        <!--  <div class="childtheme" > -->
+       <lightning-card title="Payment Details">
+              <lightning-record-form record-id={storeRecId} 
+              fields={paymentFields}
+              object-api-name={objectApiName}
+              columns="2"
+              mode="readonly">
+        </lightning-record-form>
+          </lightning-card>
+             <lightning-card>
+              <div if:true={showLoadingSpinner}>
+                  <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+              </div>
+      <!--     <template if:true={isActivityData} > 
+              <div class="slds-var-p-around_xxx-small">
+                  <lightning-datatable
+                      key-field="id"
+                      data-id="id"
+                      data={activitiesData}
+                      columns={columns2}
+                      hide-checkbox-column="true"
+                   >
+                  </lightning-datatable>
+              </div>
+           </template>  -->
+           <template for:each={activitiesData} for:item="property">
+              <div key={property.Id} class="slds-p-bottom_x-small" data-id={property.Id}>
+                  <lightning-card data-id={property.Id}>
+                      <p>Activity         -<b>{property.CD_Activity__c} </b></p>
+                      <p>Payment          -<b>{property.CD_Payment__c}</b></p>
+                      <p>Amount           -<b>{property.CD_Activity_Amount__c}</b></p>
+                       <p>Date Added      -<b>{property.CD_Date__c}</b></p>
+                      <p>Installment Type -<b>{property.CD_Installment_Type__c}</b></p>   
+                      <p>Invoice Issued   -<b>{property.CD_Invoice_Issued__c}</b></p>  
+                      <p>Receipt Issued   -<b>{property.CD_Receipt_Issued__c}</b></p>                     
+                  </lightning-card>
+              </div>
+          </template>
+          <lightning-button label="Add Payment" variant="brand" onclick={openPaymentPage}></lightning-button>
+          <template if:true={openPayment}>
+              <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" aria-hidden="true" class="slds-modal slds-fade-in-open" style="color:brown;">
+                  <div class="slds-modal__container slds-scrollable_y" >
+                      <header class="slds-modal__header">
+                      <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-border " title="Close" onclick={closePaymentPage}>
+                          <lightning-icon icon-name="utility:close"
+                              label="close"
+                              alternative-text="close"
+                              variant="success"
+                              size="small" >
+                          </lightning-icon>
+                          <span class="slds-assistive-text">Close</span>
+                      </button>
+                  </header>
+                  <div class="slds-modal__content slds-var-p-around_xxx-small">
+                      <c-managa-activity-payment getidfromparent={storeRecId} getdatafromparent={passDataValue} onmanagepayment={closePaymentPage}></c-managa-activity-payment>
+          </div> 
+      </div>
+  </section>
+
+          </template>
+             </lightning-card> 
+        <!--  </div> -->
+      </lightning-tab>
+  </template>
+  <!--    </lightning-accordion-section> -->  </template>  
+</lightning-tabset>
+                  </lightning-card>
+               </div>
+               <div>
+                  <c-agent-pending-approval-req-com> </c-agent-pending-approval-req-com>
+              </div>
+           </lightning-layout-item>
+       </lightning-layout>
+  </template>
+</template> 
+</template>
+</template>

@@ -69,6 +69,28 @@
     </div>
 
     </lightning-card>
+     
+        <!-- Account Fields
+          <template if:true={IncType}>
+            <lightning-card title="3rd Party Agency Record Details" icon-name="standard:asset_warranty">
+               
+           <p class="normal2"> 3rd Party Agency Record Record - 
+          <a href={ACCId}  class="normal1">
+                    {ACCtitle}
+            </a></p>
+            <div style="margin-top: 10px;">
+            <template for:each={Accfields} for:item="Accfield"  >
+        <div key={Accfield.apiName} class={Accfield.colorclass} > 
+            <input type="checkbox" style="margin-left: 15px" class="blue-checkbox" data-field-api-name={Accfield.apiName} onchange={handleChange} checked={Accfield.isEmpty} disabled/>
+            <label style="margin-left: 15px;">{Accfield.label}</label>
+        </div>
+    
+        </template> 
+        </div>
+   
+  
+      </lightning-card>
+      </template>  --> 
 
 
     <!-- AML Fields -->
@@ -197,7 +219,32 @@
 </footer>
 </template>
 <!--disabled={hide} -->
+ 
 
+
+
+
+
+
+
+
+    <!-- modal footer start-->
+ <!--   <footer class="slds-modal__footer">
+       <template if:true={AMLstatus}>-->
+    
+    <!--  this is the code of PB ADMIN
+        <template if:true={isButto}>
+            <lightning-button class="button-container" variant="brand" label="Create Conveyances" onclick={handleSubmit}></lightning-button>
+          </template>
+
+          <template if:false={isButto}>-->
+<!--  code of PB ADMIN-->
+      <!-- Create Conveyances button that calls the handleSubmit function when clicked, and is hidden if isButtonDisabled is true -->
+   <!--   <lightning-button class="button-container" variant="brand" label="Create Conveyances" onclick={handleSubmit} hidden={isButtonDisabled} ></lightning-button>
+   
+    </template> -->
+<!--</template> -->
+ <!--</footer>-->
       
     </div>  
     </section>

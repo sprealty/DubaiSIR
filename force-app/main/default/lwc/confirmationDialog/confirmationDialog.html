@@ -1,0 +1,104 @@
+<template>
+    
+    <lightning-card if:true={visible}>
+        <div class="slds-container_small">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 data-id="title" class="slds-text-heading_medium slds-hyphenate">{title}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                 <!--       <template if:true={isdefferclicked} >
+                        <lightning-input type="date" name="Set Expiry Date" label="Set Expiry Date" onchange={handleDateChange} value={valOfExpDate}  ></lightning-input>
+                   
+                        <lightning-textarea
+                        name="commentsLabel"
+                        value={valOfcomment}
+                        label="Defer Comments"
+                        onchange={getComments}
+                    >
+                    </lightning-textarea>
+                </template> -->
+                <template if:true={hideIt}>
+                    <lightning-input class="slds-p-around_small"  label="Approval/Rejection Date" readonly value={storeAprOrRejDate}></lightning-input>
+                </template>
+                    <template if:true={approveclick}>
+                    <lightning-input type="date" name="Set Expiry Date" label="Set Expiry Date" onchange={handleDateChange} value={valOfExpDate}  ></lightning-input>
+                </template>
+                    <lightning-textarea
+                        name="commentsLabel"
+                        value=''
+                        label="Approver Comments"
+                        onchange={getComments}
+                    >
+                    </lightning-textarea>
+                        <p data-id="message">{originalMessage}: {message}</p>
+                
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button variant="neutral" name="cancel" label={cancelLabel} title={cancelLabel}
+                            onclick={handleconformClick}></lightning-button>
+                            &nbsp;&nbsp;&nbsp;     
+                        <lightning-button variant="brand" name="confirm" label={confirmLabel} title={confirmLabel}
+                            onclick={handleconformClick}></lightning-button> 
+                 <!--       <template if:true={blockApproveButton}>
+                            <template if:false={hidereject} >
+                            <lightning-button variant="brand" name="Hold" label="Yesssss" 
+                                onclick={handleHoldApproval}></lightning-button> 
+                            </template>
+                            </template>  -->
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </lightning-card>
+
+<!-- <template if:true={isdefferclicked}>
+    <lightning-card if:true={visible}>
+        <div class="slds-container_small">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 data-id="title" class="slds-text-heading_medium slds-hyphenate">{title}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                      <template if:true={isdefferclicked} >
+                        <lightning-input type="date" name="Set Expiry Date" label="Set Expiry Date" onchange={handleDateChange} value={valOfExpDate}  ></lightning-input>
+                   
+                        <lightning-textarea
+                        name="commentsLabel"
+                        value={valOfcomments}
+                        label="Defer Comments"
+                        onchange={getDefComments}
+                    >
+                    </lightning-textarea>
+                </template> 
+              <template if:false={isdefferclicked}>
+                    <lightning-textarea
+                        name="commentsLabel"
+                        value=''
+                        label="Approver Comments"
+                        onchange={getComments}
+                    >
+                    </lightning-textarea>
+                        <p data-id="message">{originalMessage}: {message}</p>
+                    </template> 
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button variant="neutral" name="cancel" label={cancelLabel} 
+                            onclick={handleconformClick}></lightning-button>
+                            &nbsp;&nbsp;&nbsp;     
+                        <lightning-button variant="brand" name="Add Defer" label='confirm' 
+                            onclick={handleconformClick}></lightning-button> 
+                      
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </lightning-card>
+</template> -->
+</template>

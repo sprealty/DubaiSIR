@@ -1,0 +1,76 @@
+<template>
+    <lightning-card title="Upload Document"><div class="slds-card slds-size_3-of-3" style="color: rgb(13, 11, 15);">
+    <div class="slds-p-around_xx-large">
+<!--<div class="slds-p-around_medium">Documentation</div>-->
+<lightning-card title="Documentation" style="color:rgb(153, 0, 255);" >
+ <div class="slds-p-around-x-large">      
+  <lightning-layout multiple-rows="false">
+    <lightning-layout-item >
+            <lightning-input  value="Passport" read-only="true" ></lightning-input>            
+  </lightning-layout-item>
+        <lightning-layout-item>
+            <lightning-input name="passport" placeholder="Please Enter Your passport Number" value={getPropDocs.CD_Passport_Number__c} onchange={handleChange} ></lightning-input> 
+        </lightning-layout-item>
+ <lightning-layout-item>
+            <lightning-file-upload
+            type="file"
+            name="fileUploader"
+            label="Attachment"
+            accept={acceptedFormats} 
+            record-id={getidfromparent}
+            onuploadfinished={handleUploadFinished}>
+             </lightning-file-upload>
+                        </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout multiple-rows="false">
+            <lightning-layout-item>
+                    <lightning-input  value="Bank Account" read-only="true" ></lightning-input>            
+          </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-input name="BankBook" placeholder="Please Enter Your bank Acc Number" value={getPropDocs.CD_Bank_Account_Number__c} onchange={handleChange} ></lightning-input>      
+         </lightning-layout-item>
+        <lightning-layout-item>
+                    <lightning-file-upload
+                    type="file"
+                    name="fileUploader"
+                    label="Attachment"
+                    accept={acceptedFormats} 
+                    record-id={getidfromparent}
+                    onuploadfinished={handleUploadFinished} ></lightning-file-upload>
+                                </lightning-layout-item>
+                </lightning-layout>
+                <!-- <lightning-layout multiple-rows="false">
+                    <lightning-layout-item>
+                            <lightning-input  value="ID Proof" read-only="true" ></lightning-input>            
+                 
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-input name="passport" placeholder="Please Enter Your ID Number" value={} onchange={handleChange} ></lightning-input>      
+                 
+                        </lightning-layout-item>
+                
+                        <lightning-layout-item>
+                            <lightning-input
+                            type="file"
+                            name="fileUploader"
+                            label="Attachment"
+                            data-id={getidfromparent}
+                            accept={acceptedFormats} 
+                           
+                            >
+                           </lightning-input> 
+                                        </lightning-layout-item> -->
+                                    </div>                    
+
+<div class="slds-p-left_medium slds-align_absolute-center" slot="footer"  >
+    <lightning-button variant="success" label="Save File" title="Successful action" onclick={handleSave} class="slds-m-right_medium" ></lightning-button>
+    <!-- <lightning-button variant="Neutral" label="Cancel" onclick={closeChild} class="slds-m-right_medium"></lightning-button> -->
+</div>
+
+</lightning-card>
+</div>
+</div>
+</lightning-card>
+
+   
+</template>

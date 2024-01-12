@@ -1,0 +1,170 @@
+<template>
+   <template if:true={desktopView} >
+    <lightning-layout multiple multiple-rows="false">
+        <lightning-layout-item size="5" class="slds-p-top_x-small slds-p-right_small">
+    <lightning-card title="Pending for Approval" icon-name="standard:approval">
+        <template if:true={wrapperlistCondtion} >
+        <div>
+            <lightning-datatable
+                key-field="workItemId"
+                data-id="selection"
+                data={wrapperList}
+                columns={columns}
+                hide-checkbox-column="true"
+                onrowaction={handleRowAction}>
+            </lightning-datatable>
+        </div>
+    </template>
+    </lightning-card>
+</lightning-layout-item>
+<template if:false={wrapperlistCondtion} >
+    <lightning-layout>
+    <div style="height:15rem">
+        <br /><br /><br /><br />
+        <strong style="color:red;"> <center> No Pending Approval requests found.</center></strong>
+        <br /><br /><br /><br />
+    </div>
+</lightning-layout>
+</template>
+<div if:true={showLoadingSpinner}>
+    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+</div>
+<template if:true={wrapperlistCondtion} >
+<lightning-layout-item size="7" class="slds-p-top_x-small ">
+    <lightning-card >
+        <lightning-tabset>
+            <lightning-tab label="Agent Comments">
+                <!--  </lightning-accordion-section>  
+                  <lightning-accordion-section name="B" label="AGENT COMMENTS" class="childtheme"> -->
+                      <div class="childtheme" >
+                          <lightning-record-form 
+                              record-id={storeRecId} 
+                              fields={fields2}
+                              object-api-name={objectApiName}
+                              columns="3"
+                              mode="readonly">
+                          </lightning-record-form>
+                      </div>
+                  </lightning-tab>
+            <lightning-tab label="Property Information" >
+   <!-- <lightning-accordion class="Property Data"
+    onsectiontoggle={handleToggleSection}
+    active-section-name="B">
+    <lightning-accordion-section name="A" label="Property Information" class="childtheme"> -->
+
+    <div class="childtheme" >
+        <lightning-record-form 
+            record-id={storeRecId} 
+            fields={fields}
+            object-api-name={objectApiName}
+            columns="3"
+            mode="readonly">
+        </lightning-record-form>
+    </div>
+</lightning-tab>
+
+  <!--  </lightning-accordion-section>
+    </lightning-accordion> -->   
+</lightning-tabset>
+
+<!-- <lightning-button slot="actions" variant="destructive-text" label="Defer" title="Defer"
+    icon-name="utility:settings" class="slds-m-left_x-small" onclick={handleconformClick}></lightning-button> -->
+    <lightning-button slot="actions" variant="success" label="Approve" title="Approve"
+icon-name="action:approval" class="slds-m-left_x-small" onclick={handleconformClick}></lightning-button>
+<lightning-button slot="actions" variant="destructive" label="Decline" title="Reject"
+icon-name="action:reject" class="slds-m-left_x-small" onclick={handleconformClick}></lightning-button>
+</lightning-card>
+</lightning-layout-item>
+</template>
+</lightning-layout>
+<c-confirmation-dialog title='Confirmation' message='Do you want to proceed?' confirm-label='Yes'
+cancel-label='No' exp={expiryDate} approveclick={isApproveClicked} visible={isDialogVisible} datevalue={dateToPass}  original-message={originalMessage} getmessage={originalMessage} name="confirmModal"
+onclick={handleconformClick} ondeferclick={handleDeferClick} onfinalcomment={getCommentsEvent} onexpirydatepass={getExpiryDate} onholdclick={holdApprovalo} getidfromparent={storeRecId}>
+</c-confirmation-dialog>
+</template>
+<template if:true={ismobileRendered}>
+
+
+    <lightning-layout multiple-rows="true">
+        <lightning-layout-item  class="slds-p-top_x-small slds-p-right_small">
+    <lightning-card title="Pending for Approval" icon-name="standard:approval">
+        <template if:true={wrapperlistCondtion} >
+        <div>
+            <lightning-datatable
+                key-field="workItemId"
+                data-id="selection"
+                data={wrapperList}
+                columns={mobileColumns}
+                hide-checkbox-column="true"
+                onrowaction={handleRowAction}>
+            </lightning-datatable>
+        </div>
+    </template>
+    </lightning-card>
+</lightning-layout-item>
+<template if:false={wrapperlistCondtion} >
+    <lightning-layout>
+    <div style="height:15rem">
+        <br /><br /><br /><br />
+        <strong style="color:red;"> <center> No Pending Approval requests found.</center></strong>
+        <br /><br /><br /><br />
+    </div>
+</lightning-layout>
+</template>
+
+<div if:true={showLoadingSpinner}>
+    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+</div>
+<template if:true={wrapperlistCondtion} >
+<lightning-layout-item  class="slds-p-top_x-small ">
+    <lightning-card >
+        <div class="slds-align_absolute-center" >
+        <lightning-button  variant="success" label="Approve" title="Approve"
+    icon-name="action:approval" class="slds-m-left_x-small" onclick={handleconformClick}></lightning-button>
+    <lightning-button  variant="destructive" label="Decline" title="Reject"
+    icon-name="action:reject" class="slds-m-left_x-small" onclick={handleconformClick}></lightning-button>
+</div>
+    </lightning-card>
+    <lightning-card >
+        <lightning-tabset>
+            <lightning-tab label="Agent Comments">
+                <div class="childtheme" >
+                    <lightning-record-form 
+                        record-id={storeRecId} 
+                        fields={fields2}
+                        object-api-name={objectApiName}
+                        columns="2"
+                        mode="readonly">
+                    </lightning-record-form>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Property Information" >
+    <div class="childtheme" >
+        <lightning-record-form 
+            record-id={storeRecId} 
+            fields={fields}
+            object-api-name={objectApiName}
+            columns="2"
+            mode="readonly">
+        </lightning-record-form>
+    </div>
+            </lightning-tab>
+          
+</lightning-tabset>
+
+  <!--  <lightning-button slot="actions" variant="destructive-text" label="Defer" title="Defer"
+    icon-name="utility:settings" class="slds-m-left_x-small" onclick={handleconformClick}></lightning-button> -->
+   
+</lightning-card>
+</lightning-layout-item>
+</template>
+</lightning-layout>
+<c-confirmation-dialog title='Confirmation' message='Do you want to proceed?' confirm-label='Yes'
+cancel-label='No' exp={expiryDate} approveclick={isApproveClicked} visible={isDialogVisible} datevalue={dateToPass}  original-message={originalMessage} name="confirmModal"
+onclick={handleconformClick} ondeferclick={handleDeferClick} onfinalcomment={getCommentsEvent} onexpirydatepass={getExpiryDate} onholdclick={holdApprovalo} getidfromparent={storeRecId}>
+</c-confirmation-dialog>
+
+
+
+</template>
+</template>

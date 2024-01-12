@@ -1,0 +1,38 @@
+<template>
+    <lightning-card title="Upload Your Documents" icon-name="standard:file">
+      
+        <lightning-file-upload
+          record-id={recordId}
+          accept={acceptedFormats}
+          class="file-selector-large slds-align_absolute-center"
+          onuploadfinished={handleUploadPassport}
+          multiple
+        >
+        </lightning-file-upload>
+      
+      <!--label="Upload File Here"
+        <div class="slds-p-horizontal_small slds-align_absolute-center">
+      <div class="slds-p-horizontal_small">
+        <lightning-file-upload
+          label="Upload EID here"
+          record-id={recordId}
+          accept={acceptedFormats}
+          class="file-selector-large"
+          onuploadfinished={handleUploadEID}
+          multiple
+        >
+        </lightning-file-upload>
+      </div>
+      <div class="slds-p-horizontal_small">
+        <lightning-file-upload
+          label="Upload KYC here"
+          record-id={recordId}
+          accept={acceptedFormats}
+          class="file-selector-large"
+          onuploadfinished={handleUploadKYC}
+          multiple
+        >
+        </lightning-file-upload>
+      </div>-->
+    </lightning-card>
+  </template>

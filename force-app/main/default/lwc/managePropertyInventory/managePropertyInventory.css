@@ -1,0 +1,69 @@
+.childtheme {
+  background-color:whitesmoke;
+  padding: 4px;
+  font-style: normal; 
+  font-weight: bold;
+  align-content: center;
+  /* border-style:groove; */
+}
+
+
+.div1{
+  width:1500px;
+}
+.div1{
+  width:1500px;
+}
+.div2{
+width: 1500px;
+text-align: center;
+font-size:25px;
+color: darkred;
+align-content: center;
+}
+
+.host{
+  --lwc-colorBackgroundRowSelected: rgba(5, 197, 47, 0.833);
+}
+
+.itemColor {
+  color: red;
+}
+
+.highlightRow {
+  text-decoration-color: brown;
+ /* background-color: yellowgreen; */
+  }
+
+  .green{
+    background-color: green;
+  }
+  .red{
+    background-color: red;
+  }
+
+  .slds-badge {
+    background-color: var(--slds-c-badge-color-background,#fcc003);
+    /* Styles not pertinent have been omitted */
+  }
+
+  .THIS.clrYellow {
+    background-color:yellow;
+}
+:host {
+  –sds-c-tabs-list-color-border: black;
+  –sds-c-tabs-item-color-border-active: red;
+  –sds-c-tabs-item-color-border-hover: green;
+  –sds-c-tabs-item-text-color: black;
+  –sds-c-tabs-item-text-color-active: green;
+}
+
+.modal {
+  display: none;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display:flex;
+}

@@ -1,0 +1,156 @@
+<template>
+    <template if:true={desktopView}>
+        <div style="height:400px;">
+    <div class="slds-p-around_x-small">
+        <table class="slds-p-around_x-small">
+           <template for:each={PropoRecList} for:item="file" for:index="index" >
+                <tr key={keyIndex}>
+                    <td data-label="Activity" scope="row">
+                        <template if:true={activityValues.data}>
+                            <div class="filterClass slds-p-around_xx-small" >
+                                <lightning-combobox 
+                                name="Activity"
+                                label="Activity"
+                                value={selectedActivityValue}
+                                placeholder="Select Activity"
+                                options={activityValues.data.values}
+                                access-key={index}
+                                id ={index}
+                                required
+                                onchange={handleDataChange} ></lightning-combobox>
+                            </div>
+                        </template>
+                    </td>
+                    <td data-label="Date added" scope="row">
+                        <div class="slds-p-around_xx-small" >
+                        <lightning-input type="date"  label=" Date added"  name="Date"  access-key={index} value={selectedDateValue} id ={index} required
+                        onchange={handleDataChange} ></lightning-input>
+                     </div>
+                    </td> 
+                    <td data-label="Days Pending" scope="row">
+                        <div class="slds-p-around_xx-small" >
+                          <lightning-input
+                            label="Days Pending " 
+                            name="Days Pending"
+                            value={storePendingDays} 
+                            access-key={index}
+                            id ={index}
+                            mode="readonly" ></lightning-input>
+                        </div>
+                    </td>
+                    <td>
+                      <!--  <template for:each={doclist} for:item="file" for:index="index1" >
+                            <div key={keyIndex}> -->
+                     <!--   <lightning-input
+                        type="file"
+                        name="fileUploader"
+                        label="Attachment"
+                        accept={acceptedFormats} 
+                        access-key={index}
+                        id ={index}
+                        onchange={handleFilesChange}
+                        multiple>
+                       </lightning-input> -->
+                 <!--   </div>
+                        </template> -->
+                        <lightning-file-upload
+                        name="fileUploader"
+                        label="Attachment"
+                        accept={acceptedFormats} 
+                        access-key={index}
+                        id ={index} 
+                        onuploadfinished={handleFileUpload}>
+                        </lightning-file-upload>
+                </td>
+                    <td>
+                        <lightning-icon icon-name="action:delete" alternative-text="Delete" access-key={index} id ={index} title="Delete" onclick ={removeRow}></lightning-icon>
+                    </td>
+                </tr>
+            </template> 
+        </table>
+        <template if:true={showSpinner}>
+            <div class="exampleHolder">
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </div>
+        </template>
+        <div slot="footer">
+            <lightning-button label="Add Row" variant="brand" onclick={addRow}>
+         </lightning-button>&nbsp;
+         <lightning-button label="Save" variant="brand" onclick={saveFile} >
+        </lightning-button>&nbsp;
+         </div>
+    </div>
+</div>
+</template>
+
+<!-------  ******************  MOBILE COMPONENT STARTS HERE *************************           ------>
+<template if:true={ismobileRendered}>
+    <div class="slds-var-p-around_xxx-small">
+        <template for:each={PropoRecList} for:item="file" for:index="index">
+            <div key={keyIndex} class="slds-var-p-bottom_xxx-small" >
+                <lightning-card >
+                    <template if:true={activityValues.data}>
+                        <div class="filterClass slds-var-p-around_xxx-small" >
+                            <lightning-combobox 
+                            name="Activity"
+                            label="Activity"
+                            value={selectedActivityValue}
+                            placeholder="Select Activity"
+                            options={activityValues.data.values}
+                            access-key={index}
+                            id ={index}
+                            required
+                            onchange={handleDataChange} ></lightning-combobox>
+                        </div>
+                    </template>
+                    <div class="slds-var-p-around_xxx-small" >
+                        <lightning-input type="date"  label=" Date added"  name="Date"  access-key={index} value={selectedDateValue} id ={index} required
+                        onchange={handleDataChange} ></lightning-input>
+                     </div>
+                     <div class="slds-var-p-around_xxx-small" >
+                        <lightning-input
+                          label="Days Pending " 
+                          name="Days Pending"
+                          value={storePendingDays} 
+                          access-key={index}
+                          id ={index}
+                          mode="readonly" ></lightning-input>
+                      </div>
+                      <div>
+                      <!--  <lightning-input
+                        type="file"
+                        name="fileUploader"
+                        label="Attachment"
+                        accept={acceptedFormats} 
+                        access-key={index}
+                        id ={index}
+                        onchange={handleFilesChange}
+                        multiple>
+                       </lightning-input>  -->
+                       <lightning-file-upload
+                        name="fileUploader"
+                        label="Attachment"
+                        accept={acceptedFormats} 
+                        access-key={index}
+                        id ={index} 
+                        onuploadfinished={handleFileUpload}>
+                        </lightning-file-upload>
+                    </div>
+                    <lightning-icon icon-name="action:delete" alternative-text="Delete" access-key={index} id ={index} title="Delete" onclick ={removeRow}></lightning-icon>              
+                </lightning-card>
+            </div>
+        </template>
+        <template if:true={showSpinner}>
+        <div class="exampleHolder">
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </div>
+    </template>
+        <div slot="footer">
+            <lightning-button label="Add Another" variant="brand" onclick={addRow}>
+         </lightning-button>&nbsp;
+         <lightning-button label="Save" variant="brand" onclick={saveFile} >
+        </lightning-button>&nbsp;
+         </div>
+    </div>
+</template>
+</template>

@@ -1,0 +1,94 @@
+.custom-input {
+      border: 1px solid #ccc;
+      padding: 5px;
+      border-radius: 4px;
+    }
+.slds-align_absolute-center[footer] {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+.slds-p-around_xxx-small {
+      width: 100%;
+      /* Add any other styles you need */
+    }
+.mobile-view lightning-card {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      margin: 10px;
+      /* Add any other styles you need */
+    }
+    .slds-align_absolute-center {
+    text-align: center;
+}
+.slds-p-left_medium {
+    margin-left: 10px;
+}
+.mobile-view {
+    margin-top: 20px;
+}
+    .title{
+      font-size: 23px;
+      color: brown;
+      font-weight: bold;
+      text-align: center;
+          margin: 10px;
+
+    }
+.Custom-Input,
+.validate,
+.slds-p-around_xxx-small,
+.slds-p-around_small {
+    width: 100%;
+    margin-bottom: 15px;
+}
+    .Card {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 768px) {
+    .mobile-view {
+        margin-top: 0;
+    }
+    .Custom-Input,
+    .validate,
+    .slds-p-around_xxx-small,
+    .slds-p-around_small {
+        width: 100%;
+    }
+}
+.label {
+    font-family: 'Your Font', sans-serif;
+    font-size: 16px; /* Adjust the font size as needed */
+    font-weight: bold; /* Adjust the font weight as needed */
+    color: #555; /* Adjust the font color as needed */
+}
+
+.lightning-layout-item[size="4"] {
+    flex: 0 0 33.33%; /* Adjust the width as needed */
+    box-sizing: border-box;
+    padding-right: 8px; /* Adjust the right padding for spacing */
+}
+.input1{
+      padding: 21px;
+    font-size: 13px;
+    /* font-weight: bold; */
+}
+.input2{
+   padding: 0px;
+    font-size: 13px;
+    /* font-weight: bold; */
+}
+.input3{
+  padding: 22px;
+    font-size: 13px;
+    /* font-weight: bold; */
+}
+.maincard{
+background-color: darkgray;
+}
+.custom-bold-label label {
+                font-weight: bold;
+            }

@@ -1,0 +1,246 @@
+<template>
+    <template if:true={desktopView}>
+  <div class ="childtheme">
+    <!--  <lightning-card title="Payment Details">
+        <lightning-record-form record-id={getdatafromparent.Id} 
+        fields={paymentFields}
+        object-api-name={objectApiName}
+        columns="3"
+        mode="readonly">
+  </lightning-record-form>
+    </lightning-card>
+       <lightning-card>
+        <div if:true={showLoadingSpinner}>
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+     <template if:true={isActivityData} > 
+        <div class="slds-p-around_x-small">
+            <lightning-datatable
+                key-field="id"
+                data-id="id"
+                data={activitiesData}
+                columns={columns2}
+                hide-checkbox-column="true"
+             >
+            </lightning-datatable>
+        </div>
+     </template> -->
+     <div style="height: 400px;">
+        <lightning-card title="New Payment">
+        <div class="slds-p-around_x-small">
+            <table class="slds-p-around_x-small">
+               <template for:each={PropoRecList} for:item="file" for:index="index" >
+                    <tr key={keyIndex}>
+                        <td data-label="Activity" scope="row">
+                            <template if:true={activityValues.data}>
+                                <div class="filterClass slds-p-around_xx-small" >
+                                    <lightning-combobox 
+                                    name="Activity"
+                                    label="Activity"
+                                    value={selectedActivityValue}
+                                    placeholder="Select Activity"
+                                    options={activityValues.data.values}
+                                    access-key={index}
+                                    id ={index}
+                                    required
+                                    onchange={handleDataChange} ></lightning-combobox>
+                                </div>
+                            </template>
+                        </td>
+                        <td data-label="Payment %" scope="row">
+                            <div class="slds-p-around_xx-small" >
+                              <lightning-input
+                                type="text" 
+                                label=" Payment %" 
+                                name="Payment" 
+                                access-key={index}
+                                value={selectedPaymentValue}
+                                id ={index}
+                                required
+                                onchange={handleDataChange} >
+                              </lightning-input> 
+                            </div>
+                        </td>
+                        <td data-label="Payment %" scope="row">
+                            <div class="slds-p-around_xx-small" >
+                              <lightning-input
+                                label="Amount " 
+                                name="Anount"
+                                value={storeAmount} 
+                                access-key={index}
+                                id ={index}
+                                mode="readonly" ></lightning-input>
+                            </div>
+                        </td>
+                        <td data-label="Date added" scope="row">
+                            <div class="slds-p-around_xx-small" >
+                            <lightning-input type="date"  label=" Date added"  name="Date"  access-key={index} value={selectedDateValue} id ={index} required
+                            onchange={handleDataChange} ></lightning-input>
+                         </div>
+                        </td> 
+                        <td data-label="Installment type" scope="row">
+                            <template if:true={installmentValues.data}>
+                                <div class="filterClass slds-p-around_xx-small" >
+                                    <lightning-combobox 
+                                    name="Installment"
+                                    label="Installment type"
+                                    value={selectedInstallmentValue}
+                                    placeholder="Select type"
+                                    options={installmentValues.data.values}
+                                    access-key={index}
+                                    id ={index}
+                                    required
+                                    onchange={handleDataChange} ></lightning-combobox>
+                                </div>
+                            </template>
+                        </td> 
+                        <td data-label="Invoice issued" scope="row">
+                            <template if:true={invoiceValues.data}>
+                                <div class="filterClass slds-p-around_xx-small" >
+                                    <lightning-combobox 
+                                    name="Invoice"
+                                    label="Invoice issued"
+                                    value={selectedInvoiceValue}
+                                    placeholder="Select"
+                                    options={invoiceValues.data.values}
+                                    access-key={index}
+                                    id ={index}
+                                    required
+                                    onchange={handleDataChange} ></lightning-combobox>
+                                </div>
+                            </template>
+                        </td> 
+                        <td data-label="Receipt issued" scope="row">
+                            <template if:true={receiptValues.data}>
+                                <div class="filterClass slds-p-around_xx-small" >
+                                    <lightning-combobox 
+                                    name="Receipt"
+                                    label="Receipt issued"
+                                    value={selectedReceiptValue}
+                                    placeholder="Select"
+                                    options={receiptValues.data.values}
+                                    access-key={index}
+                                    id ={index}
+                                    required
+                                    onchange={handleDataChange} ></lightning-combobox>
+                                </div>
+                            </template>
+                        </td> 
+                        <td>
+                            <lightning-icon icon-name="action:delete" alternative-text="Delete" access-key={index} id ={index} title="Delete" onclick ={removeRow}></lightning-icon>
+                        </td>
+                    </tr>
+                </template> 
+                 </table>
+                 <div slot="footer">
+                    <lightning-button label="Add Row" variant="brand" onclick={addRow}>
+                 </lightning-button>&nbsp;
+                 <lightning-button label="Save" variant="brand" onclick={saveFile} >
+                </lightning-button>&nbsp;
+                 </div>
+        </div> 
+      </lightning-card>
+    </div>         
+    </div>   
+</template>   
+<!--******************MOBILE COMP HTML STARTS HERE************************-->    
+        <template if:true={ismobileRendered}>
+            <div class="slds-var-p-around_xxx-small">
+                <template for:each={PropoRecList} for:item="file" for:index="index">
+                    <div key={keyIndex} class="slds-p-bottom_x-small" >
+                        <lightning-card >
+                            <template if:true={activityValues.data}>
+                                <div class="filterClass slds-var-p-around_xxx-small" >
+                                    <lightning-combobox 
+                                    name="Activity"
+                                    label="Activity"
+                                    value={selectedActivityValue}
+                                    placeholder="Select Activity"
+                                    options={activityValues.data.values}
+                                    access-key={index}
+                                    id ={index}
+                                    required
+                                    onchange={handleDataChange} ></lightning-combobox>
+                                </div>
+                            </template> 
+                            <div class="slds-var-p-around_xxx-small" >
+                                <lightning-input
+                                  type="text" 
+                                  label=" Payment %" 
+                                  name="Payment" 
+                                  access-key={index}
+                                  value={selectedPaymentValue}
+                                  id ={index}
+                                  required
+                                  onchange={handleDataChange} >
+                                </lightning-input> 
+                              </div>
+                              <div class="slds-var-p-around_xxx-small" >
+                                <lightning-input
+                                  label="Amount " 
+                                  name="Anount"
+                                  value={storeAmount} 
+                                  access-key={index}
+                                  id ={index}
+                                  mode="readonly" ></lightning-input>
+                              </div>
+                              <div class="slds-var-p-around_xxx-small" >
+                                <lightning-input type="date"  label=" Date added"  name="Date"  access-key={index} value={selectedDateValue} id ={index} required
+                                onchange={handleDataChange} ></lightning-input>
+                             </div>
+                             <template if:true={installmentValues.data}>
+                                <div class="filterClass slds-var-p-around_xxx-small" >
+                                    <lightning-combobox 
+                                    name="Installment"
+                                    label="Installment type"
+                                    value={selectedInstallmentValue}
+                                    placeholder="Select type"
+                                    options={installmentValues.data.values}
+                                    access-key={index}
+                                    id ={index}
+                                    required
+                                    onchange={handleDataChange} ></lightning-combobox>
+                                </div>
+                            </template>
+                            <template if:true={invoiceValues.data}>
+                                <div class="filterClass slds-var-p-around_xxx-small" >
+                                    <lightning-combobox 
+                                    name="Invoice"
+                                    label="Invoice issued"
+                                    value={selectedInvoiceValue}
+                                    placeholder="Select"
+                                    options={invoiceValues.data.values}
+                                    access-key={index}
+                                    id ={index}
+                                    required
+                                    onchange={handleDataChange} ></lightning-combobox>
+                                </div>
+                            </template>
+                            <template if:true={receiptValues.data}>
+                                <div class="filterClass slds-var-p-around_xxx-small" >
+                                    <lightning-combobox 
+                                    name="Receipt"
+                                    label="Receipt issued"
+                                    value={selectedReceiptValue}
+                                    placeholder="Select"
+                                    options={receiptValues.data.values}
+                                    access-key={index}
+                                    id ={index}
+                                    required
+                                    onchange={handleDataChange} ></lightning-combobox>
+                                </div>
+                            </template> 
+                            <lightning-icon icon-name="action:delete" alternative-text="Delete" access-key={index} id ={index} title="Delete" onclick ={removeRow}></lightning-icon>              
+                        </lightning-card>
+                    </div>
+                </template>
+               
+                     <div slot="footer">
+                        <lightning-button label="Add Another" variant="brand" onclick={addRow}>
+                     </lightning-button>&nbsp;
+                     <lightning-button label="Save" variant="brand" onclick={saveFile} >
+                    </lightning-button>&nbsp;
+                     </div>
+            </div> 
+        </template>          
+ </template>
